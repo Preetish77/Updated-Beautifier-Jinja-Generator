@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,13 +141,13 @@ document.getElementById("generateBtn").addEventListener("click", function () {
 
   pairs.forEach((p, i) => {
     if (i === 0) {
-      jinja += `{% if customer.${attribute} == "${p.value}" %}\n  ${p.subject}\n`;
+      jinja += `{%- if customer.${attribute} == "${p.value}" -%}\n  ${p.subject}\n`;
     } else {
-      jinja += `{% elif customer.${attribute} == "${p.value}" %}\n  ${p.subject}\n`;
+      jinja += `{%- elif customer.${attribute} == "${p.value}" -%}\n  ${p.subject}\n`;
     }
   });
 
-  jinja += `{% else %}\n  ${defaultSL}\n{% endif %}`;
+  jinja += `{%- else -%}\n  ${defaultSL}\n{%- endif -%}`;
 
   document.getElementById("jinjaOutput").value = jinja;
 });
