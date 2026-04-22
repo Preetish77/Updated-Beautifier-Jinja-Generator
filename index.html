@@ -28,23 +28,23 @@
 <!-- Jinja Generator -->
 <h3>Jinja Generator</h3>
 
-<p><b>Attribute name (ex: pim_tester_msg_num)</b></p>
-<input type="text" id="attributeName" placeholder="pim_tester_msg_num">
+<p><b>Attribute name (ex: deployment_state_code)</b></p>
+<input type="text" id="attributeName" placeholder="deployment_state_code">
 
-<p><b>Enter Attribute Values + Subject Lines:</b></p>
+<p><b>Enter Attribute Values + Dynamic Variable:</b></p>
 
 <div id="pairsContainer">
   <div class="pair">
     <input type="text" placeholder="attribute value">
-    <input type="text" placeholder="Subject line">
+    <input type="text" placeholder="Dynamic Variable">
     <button class="removeBtn">Remove</button>
   </div>
 </div>
 
 <button id="addPairBtn">Add More</button>
 
-<p><b>Default Subject Line (optional):</b></p>
-<input type="text" id="defaultSubject" placeholder="If empty, last subject becomes default">
+<p><b>Default Dynamic Variable (optional):</b></p>
+<input type="text" id="defaultSubject" placeholder="If empty, last Dynamic Variable becomes default">
 
 <button id="generateBtn">Generate Jinja</button>
 
