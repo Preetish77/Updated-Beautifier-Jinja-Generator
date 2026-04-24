@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +43,7 @@
 <button id="addPairBtn">Add More</button>
 
 <p><b>Default Dynamic Variable (optional):</b></p>
-<input type="text" id="defaultSubject" placeholder="If empty, last Dynamic Variable becomes default">
+<input type="text" id="defaultSubject" placeholder="If empty, no ELSE block">
 
 <button id="generateBtn">Generate Jinja</button>
 
@@ -52,14 +51,13 @@
 
 <script>
 /* ================================
-   BEAUTIFIER — WORKING
+   BEAUTIFIER â€” WORKING
 ================================ */
 document.getElementById("beautifyBtn").addEventListener("click", function () {
   let code = document.getElementById("input").value.trim();
 
   if (!code) return;
 
-  // Split Jinja tags onto new lines
   code = code
     .replace(/{%/g, "\n{%")
     .replace(/%}/g, "%}\n")
@@ -81,7 +79,7 @@ document.getElementById("beautifyBtn").addEventListener("click", function () {
 });
 
 /* ================================
-   ADD MORE — WORKING
+   ADD MORE â€” WORKING
 ================================ */
 document.getElementById("addPairBtn").addEventListener("click", function () {
   const container = document.getElementById("pairsContainer");
@@ -98,7 +96,7 @@ document.getElementById("addPairBtn").addEventListener("click", function () {
 });
 
 /* ================================
-   REMOVE PAIR — WORKING
+   REMOVE PAIR â€” WORKING
 ================================ */
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("removeBtn")) {
@@ -107,7 +105,7 @@ document.addEventListener("click", function (e) {
 });
 
 /* ================================
-   GENERATE JINJA — WORKING
+   GENERATE JINJA â€” STRICT VALIDATION
 ================================ */
 document.getElementById("generateBtn").addEventListener("click", function () {
   const attribute = document.getElementById("attributeName").value.trim();
@@ -118,23 +116,25 @@ document.getElementById("generateBtn").addEventListener("click", function () {
     return;
   }
 
-  // Collect all pairs
-  let pairs = [...document.querySelectorAll("#pairsContainer .pair")].map(p => {
-    return {
-      value: p.children[0].value.trim(),
-      subject: p.children[1].value.trim()
-    };
-  }).filter(p => p.value && p.subject);
+  let rawPairs = [...document.querySelectorAll("#pairsContainer .pair")];
+  let pairs = [];
+
+  for (let i = 0; i < rawPairs.length; i++) {
+    let value = rawPairs[i].children[0].value.trim();
+    let subject = rawPairs[i].children[1].value.trim();
+
+    // âŒ Error if ANY field is empty
+    if (!value || !subject) {
+      alert(`Row ${i + 1}: Please fill both fields.`);
+      return;
+    }
+
+    pairs.push({ value, subject });
+  }
 
   if (pairs.length === 0) {
     alert("Add at least one value + subject pair.");
     return;
-  }
-
-  // If no default provided → last subject becomes default
-  if (!defaultSL) {
-    const last = pairs.pop();
-    defaultSL = last.subject;
   }
 
   let jinja = "";
@@ -147,7 +147,11 @@ document.getElementById("generateBtn").addEventListener("click", function () {
     }
   });
 
-  jinja += `{%- else -%}\n  ${defaultSL}\n{%- endif -%}`;
+  if (defaultSL) {
+    jinja += `{%- else -%}\n  ${defaultSL}\n`;
+  }
+
+  jinja += `{%- endif -%}`;
 
   document.getElementById("jinjaOutput").value = jinja;
 });
